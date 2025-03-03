@@ -11,3 +11,5 @@ Tools for working with 3d tiles
    - applies ktx2 image compression to all texture files
 - writes back to disk a glb (regardless of initial format of b3dm or glb)
 - parses tilset.json to replace any instance of b3dm with glb (if the initial files were b3dm)
+
+COntents of `B3DM Extract` have been incorporated into compress already.
