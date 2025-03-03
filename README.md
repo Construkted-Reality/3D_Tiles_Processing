@@ -2,9 +2,9 @@
 
 Tools for working with 3d tiles
 
-B3DM_Extract : extracts glb from b3dm files 
+**B3DM_Extract** : extracts glb from b3dm files 
 
-compress: scans a tileset and applies the following optomizations:
+**compress**: scans a tileset and applies the following optomizations:
 - loads b3dm or glb from the input folder
 - applies command line flags
    - applies draco compression
