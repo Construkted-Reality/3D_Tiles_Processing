@@ -1,0 +1,6 @@
+# .gitignore
+
+# Ignore node_modules directories in all subdirectories
+node_modules/
+/data/
+*.log

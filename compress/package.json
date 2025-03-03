@@ -1,0 +1,26 @@
+{
+  "name": "draco",
+  "version": "2.0.0",
+  "description": "3DTiles draco compression CLI",
+  "main": "bin/compress.js",
+  "bin": {
+    "DracoCompress": "./bin/compress.js"
+  },
+  "type": "module",
+  "author": "@JDUltra",
+  "license": "ISC",
+  "dependencies": {
+    "@gltf-transform/cli": "3.10.1",
+    "@gltf-transform/core": "3.10.1",
+    "@gltf-transform/extensions": "3.10.1",
+    "@gltf-transform/functions": "3.10.1",
+    "canvas": "^2.11.2",
+    "draco3dgltf": "^1.5.7",
+    "fdir": "^5.2.0",
+    "fs-extra": "^11.1.1",
+    "meshoptimizer": "0.20.0",
+    "node-fetch": "^3.3.2",
+    "p-limit": "^6.2.0",
+    "winston": "^3.17.0"
+  }
+}
