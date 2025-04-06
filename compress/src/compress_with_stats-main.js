@@ -93,32 +93,8 @@ function handleCompletion(message) {
 
     runNextBatch(); // Initial batch of tasks
 }
+
 /*
-// Function to update tileset.json
-function updateTilesetJson(folderPath) {
-    const tilesetFilePath = path.join(folderPath, 'tileset.json');
-    if (!fs.existsSync(tilesetFilePath)) {
-        console.warn('tileset.json not found in the folder.');
-        return;
-    }
-
-    try {
-        // Read and parse tileset.json
-        let tilesetContent = JSON.parse(fs.readFileSync(tilesetFilePath, 'utf8'));
-
-        // Replace .b3dm with .glb recursively
-        tilesetContent = replaceB3dmWithGlb(tilesetContent);
-
-        // Write updated tileset.json back to file
-        fs.writeFileSync(tilesetFilePath, JSON.stringify(tilesetContent, null, 2), 'utf8');
-        console.log('tileset.json has been updated successfully.');
-    } catch (err) {
-        console.error(`Error updating tileset.json: ${err.message}`);
-    }
-}
-*/
-
-
 function updateTilesetJson(folderPath) {
     function processJsonFile(filePath) {
         try {
@@ -157,7 +133,6 @@ function updateTilesetJson(folderPath) {
     traverseDirectory(folderPath);
 }
 
-
 // Function to replace .b3dm with .glb recursively
 function replaceB3dmWithGlb(obj) {
     if (typeof obj === 'string') {
@@ -170,6 +145,58 @@ function replaceB3dmWithGlb(obj) {
                 obj[key] = replaceB3dmWithGlb(obj[key]);
             }
         }
+    }
+    return obj;
+}
+*/
+
+
+function updateTilesetJson(folderPath) {
+    function processJsonFile(filePath) {
+        try {
+            const jsonContent = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            const updatedContent = updateJsonReferences(jsonContent);
+            fs.writeFileSync(filePath, JSON.stringify(updatedContent, null, 2), 'utf8');
+            console.log(`${path.basename(filePath)} has been updated successfully.`);
+        } catch (err) {
+            console.error(`Error updating ${path.basename(filePath)}: ${err.message}`);
+        }
+    }
+
+    function traverseDirectory(directoryPath) {
+        const files = fs.readdirSync(directoryPath);
+        for (const file of files) {
+            const filePath = path.join(directoryPath, file);
+            const stat = fs.statSync(filePath);
+            if (stat.isDirectory()) {
+                traverseDirectory(filePath);
+            } else if (path.extname(filePath) === '.json') {
+                processJsonFile(filePath);
+            }
+        }
+    }
+
+    traverseDirectory(folderPath);
+}
+
+// Recursively update the JSON object:
+// - replace ".b3dm" with ".glb" in string values
+// - rename property keys "url" to "uri"
+function updateJsonReferences(obj) {
+    if (typeof obj === 'string') {
+        return obj.replace(/\.b3dm/g, '.glb');
+    } else if (Array.isArray(obj)) {
+        return obj.map(item => updateJsonReferences(item));
+    } else if (obj && typeof obj === 'object') {
+        // Copy so we don't modify while iterating keys
+        const updatedObj = {};
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                let newKey = key === 'url' ? 'uri' : key;
+                updatedObj[newKey] = updateJsonReferences(obj[key]);
+            }
+        }
+        return updatedObj;
     }
     return obj;
 }
