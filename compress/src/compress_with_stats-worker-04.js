@@ -202,7 +202,7 @@ async function compress(file, dracoCompression, ktx) {
     }
 
     const executionTime = (Date.now() - startTime) / 1000;
-    process.send(`, Execution time: ${executionTime.toFixed(2)}s. ${ktxApplied ? 'KTX Applied' : 'KTX Not Applied'}. ${dracoApplied ? 'Draco Applied' : 'Draco Not Applied'}`);
+    process.send(`, Execution time: ${executionTime.toFixed(2)}s. KTX: ${ktx ? 'Requested' : 'Not Requested'}: ${ktxApplied ? 'Applied' : 'Not Applied'}. Draco ${dracoCompression ? 'Requested' : 'Not Requested'}: ${dracoApplied ? 'Applied' : 'Not Applied'}`);
     process.exit(0);
 }
 
